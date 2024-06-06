@@ -25,8 +25,9 @@ export default class AuthController {
   public async register({ request, response }: HttpContextContract) {
     const payload = await request.validate(RegisterValidator);
     try {
+ 
       await User.create(payload);
-  
+
       return response.status(200).json({
         message: "Account created successfully",
       });

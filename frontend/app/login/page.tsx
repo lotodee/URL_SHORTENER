@@ -9,10 +9,10 @@ import { useAuthContext } from "@/hooks/useAuthContext";
 const Login = () => {
   const { user } = useAuthContext();
   const router = useRouter();
-//   const { token } = user ?? { token: null };
-//   if(token){
-// router.push("/")
-//   }
+  const { token } = user ?? { token: null };
+  if(token){
+router.push("/")
+  }
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -57,7 +57,7 @@ const Login = () => {
             icon={openPassword ? "/eyeopen.svg":"/eyeclosed.svg"}
           />
           {error && (
-            <div>{error}</div>
+            <div className={styles.error}>{error}</div>
           )}
         </div>
 

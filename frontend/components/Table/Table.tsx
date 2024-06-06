@@ -9,7 +9,7 @@ import { TableProps, TableResponseData } from '@/types/types';
 import { useAuthContext } from '@/hooks/useAuthContext';
 import { getUserData } from '@/hooks/getUsersData';
 
-const Table = ({ onClick }: TableProps) => {
+const Table = ({ onClick ,triggerFetch}: TableProps) => {
   const [small, setSmall] = useState(false);
   const { user } = useAuthContext();
   const { token } = user ?? { token: null };
@@ -40,16 +40,13 @@ const Table = ({ onClick }: TableProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
 
-  // useEffect(() => {
-  //   setData(testData);
-  // }, []);
-
+ 
   useEffect(() => {
     
     if (token) {
       const fetchData = async () => {
         const response = await getUserData({ token });
-        console.log(response)
+       
        setData(response)
       };
       fetchData();
@@ -57,6 +54,15 @@ const Table = ({ onClick }: TableProps) => {
   }, [token]);
 
 
+  if(triggerFetch){
+    if (token) {
+    (async () => {
+      const response = await getUserData({ token });
+      console.log(response);
+      setData(response);
+    })();
+  }
+  }
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };

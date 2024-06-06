@@ -44,6 +44,7 @@ export interface PaginationProps {
 }
 export type  TableProps = {
     onClick: (link: string) => void;
+    triggerFetch:boolean
 }
 
 export interface TableResponseData {

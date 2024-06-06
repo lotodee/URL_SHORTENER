@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import styles from "./page.module.css";
 import { AuthInput, Button } from "@/components";
 import Link from "next/link";
@@ -20,11 +20,79 @@ router.push("/")
   const [password_confirmation, setPassword_confirmation] = useState("");
   const [openPassword, setOpenPassword] = useState(false);
   const [openConfirmPassword, setOpenConfirmPassword] = useState(false);
+  const [emailError ,setEmailError] = useState("");
+  const [passwordError ,setPasswordError] = useState("");
+  const [confirmPasswordError ,setConfirmPasswordError] = useState("");
 const {register} = useRegister()
-  const handleRegister =async () => {
-await register(email,password,password_confirmation)
-   
-  };
+
+
+const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+  setEmailError('')
+  setEmail(e.target.value);
+  if (!isValidEmail(e.target.value)) {
+    setEmailError('Invalid email');
+  } else {
+    setEmailError('');
+  }
+};
+
+const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+  setPasswordError('')
+  setPassword(e.target.value);
+  const passwordStrength = checkPasswordStrength(e.target.value);
+  if (passwordStrength === 'not strong') {
+    setPasswordError('Too short: Password must be at least 8 chars, 1 uppercase, 1 lowercase, and 1 number.');
+  } else if (passwordStrength === 'weak') {
+    setPasswordError('Weak:Password must be at least 8 chars, 1 uppercase, 1 lowercase, and 1 number');
+  } else if (passwordStrength === 'perfect') {
+    setPasswordError('');
+  } else {
+    setPasswordError('Password is not strong enough.');
+  }
+};
+
+const handleConfirmPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+  setConfirmPasswordError('')
+  setPassword_confirmation(e.target.value);
+  if (password !== e.target.value) {
+    setConfirmPasswordError('Passwords do not match');
+  } else {
+    setConfirmPasswordError('');
+  }
+};
+
+const isValidEmail = (email:string) => {
+
+  return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+};
+
+const checkPasswordStrength = (password:string) => {
+
+  if (password.length < 8) {
+    return 'not strong';
+  } else if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/\d/.test(password)) {
+    return 'weak';
+  } 
+   else {
+    return 'perfect';
+  }
+};
+
+const handleRegister = async () => {
+  if (emailError === '' && passwordError === '' && confirmPasswordError === '') {
+
+    await register(email, password, password_confirmation);
+  }
+}
+
+
+
+
+
+
+
+
+
 
   return (
     <div className={styles.main}>
@@ -41,38 +109,42 @@ await register(email,password,password_confirmation)
             labelText="EMAIL ADDRESS"
             type="text"
             value={email}
-            onchange={(e) => {
-              setEmail(e.target.value);
-            }}
+            onchange={handleEmailChange}
             placeholderText="Enter your email"
             icon="/env.svg"
           />
+          {emailError && (
+            <div className={styles.error}>{emailError}</div>
+          )}
           <AuthInput
             labelText="CREATE PASSWORD"
             type={openPassword ? "text" : "password"}
             value={password}
-            onchange={(e) => {
-              setPassword(e.target.value);
-            }}
+            onchange={handlePasswordChange}
             placeholderText="Enter Password"
             icon={openPassword ? "/eyeopen.svg" : "/eyeclosed.svg"}
             onclick={() => {
               setOpenPassword(!openPassword);
             }}
           />
+          {passwordError  && (
+            <div className={styles.error}>{passwordError}</div>
+          )}
           <AuthInput
             labelText="CONFIRM PASSWORD"
             type={openConfirmPassword ? "text" : "password"}
             value={password_confirmation}
-            onchange={(e) => {
-              setPassword_confirmation(e.target.value);
-            }}
+            onchange={handleConfirmPasswordChange}
             placeholderText="Enter Password"
             icon={openConfirmPassword ? "/eyeopen.svg" : "/eyeclosed.svg"}
             onclick={() => {
               setOpenConfirmPassword(!openConfirmPassword);
             }}
           />
+          {confirmPasswordError  && (
+            <div className={styles.error}>{confirmPasswordError}</div>
+          )}
+           
         </div>
 
         <div className={styles.buttons}>

@@ -26,7 +26,8 @@ export default function Home() {
   const [link, setLink] = useState("");
   const [description, setDescription] = useState("");
   const [icon ,setIcon] = useState("/copyIcon.svg")
-
+  const [trigger,setTrigger] = useState(false)
+ 
   const handleShorten = async () => {
     const { token } = user ?? { token: null };
     if (token) {
@@ -40,6 +41,10 @@ export default function Home() {
         console.log(shortenedUrl,name);
         setCurrentLink(shortenedUrl);
         setIsModalOpen(true);
+        setTrigger(true)
+        setTimeout(() => {
+          setTrigger(false)
+        }, 2000);
       }
     } else {
       console.error("No token available");
@@ -58,6 +63,7 @@ export default function Home() {
     setCurrentLink(`
     http://localhost:3333/api/${link}`);
     setIsModalOpen(true);
+   
   };
 
   const handleCloseModal = () => {
@@ -104,7 +110,7 @@ export default function Home() {
         </div>
 
         <div className={styles.bottom}>
-          <Table onClick={handleOpenModal} />
+          <Table onClick={handleOpenModal}  triggerFetch={trigger}/>
         </div>
         <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
           <Image src="/colorLink.svg" height={48} width={48} alt="icon" />
