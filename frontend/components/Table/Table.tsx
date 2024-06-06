@@ -87,7 +87,7 @@ const Table = ({ onClick ,triggerFetch}: TableProps) => {
         <HeaderText text='Shortened URL' />
       </div>
 
-      {currentPageData.map((item:any)=> (
+      {currentPageData.map((item)=> (
         <div
           key={item.id}
           className={styles.TableBody}
