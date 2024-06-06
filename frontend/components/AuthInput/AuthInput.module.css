@@ -1,0 +1,35 @@
+.mainAuthWrapper{
+
+display: flex;
+align-items:first baseline;
+flex-direction: column;
+gap:8px;
+}
+.labelText{
+    color: rgba(16, 25, 40, 1);
+    font-weight: 500;
+    font-size: 14px;
+}
+.input_container{
+    display: flex;
+    width: 100%;
+    padding: 16px;
+    border: 1px solid rgba(208, 213, 221, 1);
+    border-radius: 6px;
+    cursor: pointer;
+}
+.input_container:hover{
+    border: 1px solid rgba(146, 183, 254, 1) ;
+}
+.input{
+  flex: 1;
+    background-color: none;
+    border: none;
+
+}
+.input:focus{
+    outline: none
+}
+.icon{
+   
+}

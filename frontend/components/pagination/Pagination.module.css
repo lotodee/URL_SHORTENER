@@ -1,0 +1,66 @@
+.paginationController{
+    display: flex;
+    justify-content: space-between;
+    padding:20px 24px;
+    border-top:1px solid rgb(199, 200, 202);
+    align-items: center;
+    
+}
+
+.previous,.next{
+ border: 1px solid rgba(208, 213, 221, 1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap:5px;
+    padding: 8px 14px;
+    cursor: pointer;
+    color: rgba(52, 64, 84, 1);
+    font-weight: 500;
+    font-size: 14px;
+    
+}
+.prevBtn,.nextBtn{
+    border: none;
+    background-color: none;
+    cursor: pointer;
+}
+.numbers{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.active{
+    color: rgba(102, 112, 133, 1);
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    background-color: rgba(219, 232, 255, 1);
+    border-radius: 8px;
+    padding:  10px 12px;
+    cursor: pointer;
+
+}
+
+.inactive{
+    color: rgba(102, 112, 133, 1);
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+}
+
+.ellipsis{
+    color: rgba(102, 112, 133, 1);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.smallControllerText{
+color:rgba(52, 64, 84, 1)
+}
+
+.span{
+    color:rgb(105, 109, 116);
+}

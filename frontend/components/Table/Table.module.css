@@ -1,0 +1,47 @@
+.table{
+    
+    border-radius: 8px;
+
+
+}
+
+.TableHeader{
+   display: flex;
+   background-color: rgba(234, 236, 240, 1);
+   padding: 16px 24px;
+   
+   border-top-right-radius: 8px;
+   border-top-left-radius: 8px;
+
+}
+.TableBody{
+    padding: 24px 24px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid rgb(199, 200, 202);
+    cursor: pointer;
+}
+.name,.desc,.shortened{flex: 1; }
+.name{
+    color: rgba(16, 24, 40, 1);
+    font-size: 14px;
+    font-weight: 500;
+}
+.desc{
+    color: rgba(102, 112, 133, 1);
+    font-weight: 400;
+    font-size: 14px;
+}
+.shortened{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.shortenedText{
+
+    color:rgba(102, 112, 133, 1);
+    text-decoration: underline;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+}

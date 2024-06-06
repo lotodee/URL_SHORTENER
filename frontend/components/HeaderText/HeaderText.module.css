@@ -1,0 +1,10 @@
+.wrapper{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.text{
+    color: rgba(102, 112, 133, 1);
+    font-weight: 500;
+    font-size: 12px;
+}
