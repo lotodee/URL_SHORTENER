@@ -32,7 +32,7 @@ export default class UrlShortenerController {
       const { name, description, link } = request.all();
       const userId = user.id;
       const shortenedUrl = await this.generateShortUrl(link);
-      const urlShortener = await UrlShortener.create({
+      await UrlShortener.create({
         name,
         description,
         originalUrl: link,
@@ -49,7 +49,7 @@ export default class UrlShortenerController {
 
   public async redirect({ request, response }: HttpContextContract) {
     const shortenedUrl = request.param('shortenedUrl');
-    
+
 
     const urlShortener = await UrlShortener.findBy('shortened_url', shortenedUrl);
     if (urlShortener) {
