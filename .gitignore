@@ -37,8 +37,8 @@ frontend/next-env.d.ts
 
 
 # Ignore backend files
-backend/*
-!backend/.gitkeep
+
+
 
 # Ignore node_modules
 backend/node_modules/
