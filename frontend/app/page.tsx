@@ -13,10 +13,16 @@ import { useEffect, useState } from "react";
 import { truncateLink } from "@/utils/truncatelink";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useUrlShortener } from "@/hooks/useUrlShortener";
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
   const { user } = useAuthContext();
   const { token } = user ?? { token: null };
+const router = useRouter();
+
+  if(!token){
+    router.push("/register")
+  }
   console.log(token)
   const urlShortener = useUrlShortener();
 
