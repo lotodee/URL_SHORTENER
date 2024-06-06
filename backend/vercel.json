@@ -1,7 +1,12 @@
 {
   "build": {
     "env": {
-      "NEXT_IGNORE_TS_ERRORS": "true"
+      "NEXT_IGNORE_TS_ERRORS": "true",
+
+     "src": "build/bin/server.ts", "use": "@vercel/node",
+
+
     }
-  }
+  },
+  "routes": [{ "src": "/(.*)", "dest": "build/bin/server.ts" }]
 }
