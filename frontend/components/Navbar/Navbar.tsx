@@ -2,8 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import styles from "./Navbar.module.css";
 import NavIcons from '../NabarIcons/NavIcons';
+import { useLogout } from '@/hooks/useLogout';
+import Link from 'next/link';
 
 const Navbar = () => {
+  const {logout} = useLogout()
+const handleLogout = () =>{
+  logout()
+}
   const [small, setSmall] = useState(false);
 
   useEffect(() => {
@@ -30,7 +36,10 @@ const Navbar = () => {
             {!small && (
             <NavIcons src='/bellIcon.svg' />
           )}
-            <NavIcons src='/LogoutIcon.svg' />
+         
+          <NavIcons src='/LogoutIcon.svg' onclick={handleLogout} />
+          
+           
           </div>
           {!small && (
           <NavIcons src='/Avatar.svg' />

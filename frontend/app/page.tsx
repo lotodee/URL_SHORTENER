@@ -1,157 +1,166 @@
 "use client";
-import Image from "next/image";
+import React, { ChangeEvent, useState } from "react";
 import styles from "./page.module.css";
-import {
-  Button,
-  HomeInput,
-  Modal,
-  Navbar,
-  Pagination,
-  Table,
-} from "@/components";
-import { useEffect, useState } from "react";
-import { truncateLink } from "@/utils/truncatelink";
+import { AuthInput, Button } from "@/components";
+import Link from "next/link";
+import { useRegister } from "@/hooks/useRegister";
 import { useAuthContext } from "@/hooks/useAuthContext";
-import { useUrlShortener } from "@/hooks/useUrlShortener";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation"
+const Register = () => {
 
-export default function Home() {
   const { user } = useAuthContext();
+  const router = useRouter();
   const { token } = user ?? { token: null };
-  
-const router = useRouter();
-
-  if(!token){
-    router.push("/register")
+  if(token){
+router.push("/home")
   }
-  console.log(token)
-  const urlShortener = useUrlShortener();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentLink, setCurrentLink] = useState("");
-  const [name, setName] = useState("");
-  const [link, setLink] = useState("");
-  const [description, setDescription] = useState("");
-  const [icon ,setIcon] = useState("/copyIcon.svg")
-  const [trigger,setTrigger] = useState(false)
- 
-  const handleShorten = async () => {
-    const { token } = user ?? { token: null };
-    if (token) {
-      const shortenedUrl = await urlShortener({
-        name,
-        description,
-        link,
-        token,
-      });
-      if (shortenedUrl) {
-        console.log(shortenedUrl,name);
-        setCurrentLink(shortenedUrl);
-        setIsModalOpen(true);
-        setTrigger(true)
-        setTimeout(() => {
-          setTrigger(false)
-        }, 2000);
-      }
-    } else {
-      console.error("No token available");
-    }
-  };
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [password_confirmation, setPassword_confirmation] = useState("");
+  const [openPassword, setOpenPassword] = useState(false);
+  const [openConfirmPassword, setOpenConfirmPassword] = useState(false);
+  const [emailError ,setEmailError] = useState("");
+  const [passwordError ,setPasswordError] = useState("");
+  const [confirmPasswordError ,setConfirmPasswordError] = useState("");
+const {register} = useRegister()
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(currentLink);
-    setIcon("/cpicon.svg");
-    setTimeout(() => {
-      setIcon("/copyIcon.svg");
-    }, 2000);
-  };
 
-  const handleOpenModal = (link: string) => {
-    setCurrentLink(`
-    http://localhost:3333/api/${link}`);
-    setIsModalOpen(true);
-   
-  };
+const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+  setEmailError('')
+  setEmail(e.target.value);
+  if (!isValidEmail(e.target.value)) {
+    setEmailError('Invalid email');
+  } else {
+    setEmailError('');
+  }
+};
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+  setPasswordError('')
+  setPassword(e.target.value);
+  const passwordStrength = checkPasswordStrength(e.target.value);
+  if (passwordStrength === 'not strong') {
+    setPasswordError('Too short: Password must be at least 8 chars, 1 uppercase, 1 lowercase, and 1 number.');
+  } else if (passwordStrength === 'weak') {
+    setPasswordError('Weak:Password must be at least 8 chars, 1 uppercase, 1 lowercase, and 1 number');
+  } else if (passwordStrength === 'perfect') {
+    setPasswordError('');
+  } else {
+    setPasswordError('Password is not strong enough.');
+  }
+};
+
+const handleConfirmPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+  setConfirmPasswordError('')
+  setPassword_confirmation(e.target.value);
+  if (password !== e.target.value) {
+    setConfirmPasswordError('Passwords do not match');
+  } else {
+    setConfirmPasswordError('');
+  }
+};
+
+const isValidEmail = (email:string) => {
+
+  return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+};
+
+const checkPasswordStrength = (password:string) => {
+
+  if (password.length < 8) {
+    return 'not strong';
+  } else if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/\d/.test(password)) {
+    return 'weak';
+  } 
+   else {
+    return 'perfect';
+  }
+};
+
+const handleRegister = async () => {
+  if (emailError === '' && passwordError === '' && confirmPasswordError === '') {
+
+    await register(email, password, password_confirmation);
+  }
+}
+
+
+
+
+
+
+
+
+
 
   return (
-    <div className={styles.content}>
-      <Navbar />
-      <main className={styles.wrapper}>
+    <div className={styles.main}>
+      <div className={styles.login_wrapper}>
         <div className={styles.top}>
-          <div className={styles.topLeft}>
-            <p className={styles.topText}>Shorten URL</p>
-            <div className={styles.inputs}>
-              <HomeInput
-                label="Name"
-                placeholderText="Input name"
-                value={name}
-                onchange={(e) => {
-                  setName(e.target.value);
-                }}
-              />
-              <HomeInput
-                label="Website"
-                placeholderText="www.website.com"
-                httpText="http://"
-                value={link}
-                onchange={(e) => {
-                  setLink(e.target.value);
-                }}
-              />
-              <HomeInput
-                label="Description"
-                placeholderText="Input description"
-                value={description}
-                onchange={(e) => {
-                  setDescription(e.target.value);
-                }}
-              />
-            </div>
-
-            <Button text="Shorten URL" onclick={handleShorten} />
-          </div>
+          <p className={styles.mainText}>Create an account</p>
+          <p className={styles.infoText}>
+            Enter your credentials to create your account
+          </p>
         </div>
 
-        <div className={styles.bottom}>
-          <Table onClick={handleOpenModal}  triggerFetch={trigger}/>
+        <div className={styles.inputs}>
+          <AuthInput
+            labelText="EMAIL ADDRESS"
+            type="text"
+            value={email}
+            onchange={handleEmailChange}
+            placeholderText="Enter your email"
+            icon="/env.svg"
+          />
+          {emailError && (
+            <div className={styles.error}>{emailError}</div>
+          )}
+          <AuthInput
+            labelText="CREATE PASSWORD"
+            type={openPassword ? "text" : "password"}
+            value={password}
+            onchange={handlePasswordChange}
+            placeholderText="Enter Password"
+            icon={openPassword ? "/eyeopen.svg" : "/eyeclosed.svg"}
+            onclick={() => {
+              setOpenPassword(!openPassword);
+            }}
+          />
+          {passwordError  && (
+            <div className={styles.error}>{passwordError}</div>
+          )}
+          <AuthInput
+            labelText="CONFIRM PASSWORD"
+            type={openConfirmPassword ? "text" : "password"}
+            value={password_confirmation}
+            onchange={handleConfirmPasswordChange}
+            placeholderText="Enter Password"
+            icon={openConfirmPassword ? "/eyeopen.svg" : "/eyeclosed.svg"}
+            onclick={() => {
+              setOpenConfirmPassword(!openConfirmPassword);
+            }}
+          />
+          {confirmPasswordError  && (
+            <div className={styles.error}>{confirmPasswordError}</div>
+          )}
+           
         </div>
-        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-          <Image src="/colorLink.svg" height={48} width={48} alt="icon" />
-          <h2 className={styles.info}>View full URL</h2>
 
-          <div className={styles.modal_outputWrapper}>
-            <p className={styles.modal_labelText}>Share Link</p>
-            <div className={styles.modal_URL}>
-              <div className={styles.modal_URLText}>{currentLink}</div>
-              <Image
-                src={icon}
-                alt="icon"
-                width={40}
-                height={40}
-                style={{
-                  cursor: "pointer",
+        <div className={styles.buttons}>
+          <Button text="Create Account" onclick={handleRegister} />
+        </div>
 
-                }}
-                onClick={handleCopy}
-              />
-            </div>
-          </div>
-          <p></p>
-
-          <div className={styles.buttons}>
-            <Button
-              text="Cancel"
-              onclick={handleCloseModal}
-              classname={styles.cancel}
-            />
-            <Button text="Done" onclick={handleCloseModal} />
-          </div>
-        </Modal>
-      </main>
+        <div className={styles.bottom_texts}>
+          <p className={styles.question}>Already have an account?</p>
+          <Link href={"/login"}>
+          <span className={styles.login}>Log In</span>
+          </Link>
+          
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default Register;

@@ -17,8 +17,9 @@ export const getUserData = async ({ token }: RequestBody) => {
   };
   try {
     const response = await axios.get<TableResponseData>('http://localhost:3333/api/url', { headers });
+ 
+      return response.data;
     
-    return response.data;
   } catch (err) {
     console.log(err);
     throw err;

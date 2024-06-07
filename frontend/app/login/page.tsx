@@ -11,7 +11,7 @@ const Login = () => {
   const router = useRouter();
   const { token } = user ?? { token: null };
   if(token){
-router.push("/")
+router.push("/home")
   }
 
   const [email, setEmail] = useState("");
@@ -68,7 +68,7 @@ router.push("/")
         <div className={styles.bottom_texts}>
           <p className={styles.question}>Are you new here?</p>
           
-            <Link href={"/register"}>
+            <Link href={"/"}>
             <span className={styles.login}>Create Account</span>
             </Link>
           

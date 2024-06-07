@@ -21,7 +21,8 @@ export type ButtonProp = {
 }
 
 export type NavIconProps = {
-    src :string
+    src :string,
+    onclick?:React.MouseEventHandler<HTMLImageElement>
 }
 
 export type HomeInputs = {
