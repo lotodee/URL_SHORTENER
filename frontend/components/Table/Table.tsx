@@ -8,6 +8,7 @@ import { TableProps, TableResponseData } from '@/types/types';
 
 import { useAuthContext } from '@/hooks/useAuthContext';
 import { getUserData } from '@/hooks/getUsersData';
+import Link from 'next/link';
 
 const Table = ({ onClick, triggerFetch }: TableProps) => {
   const [small, setSmall] = useState(false);
@@ -86,7 +87,7 @@ const Table = ({ onClick, triggerFetch }: TableProps) => {
         <div
           key={item.id}
           className={styles.TableBody}
-          onClick={() => handleClick(item.shortened_url)}
+         
         >
           {!small && (
             <>
@@ -95,7 +96,12 @@ const Table = ({ onClick, triggerFetch }: TableProps) => {
             </>
           )}
           <div className={styles.shortened}>
-            <p className={styles.shortenedText}>http://localhost:3333/api/{item.shortened_url}</p>
+          <Link href={`http://localhost:3333/api/${item.shortened_url}`} legacyBehavior>
+              <a target="_blank" rel="noopener noreferrer" className={styles.shortenedText}>
+                http://localhost:3333/api/{item.shortened_url}
+              </a>
+            </Link>
+           
             <Image src="/bodyLink.svg" alt='linkicon' height={18} width={18} />
           </div>
         </div>
