@@ -1,11 +1,11 @@
-"use client"
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,13 +25,13 @@ export default function RootLayout({
   const { token } = user ?? { token: null };
   const router = useRouter();
 
-  useEffect(() => {
+
     if (token) {
       router.push('/');
     } else {
       router.push('/register');
     }
-  }, [token, router]);
+
 
 
 
