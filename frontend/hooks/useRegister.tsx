@@ -8,7 +8,7 @@ interface LoginResponse {
 
 export const useRegister = () => {
   const router = useRouter()
-  const [error, setError] = useState<AxiosError | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [registered, setRegistered] = useState<boolean>(false);
   const [openModal ,setOpenModal] = useState(false)
@@ -34,17 +34,23 @@ export const useRegister = () => {
    
      
       
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-     
-    setError(err);
-        console.log("the",error?.response?.data)
-      } else {
-        setError({ message: 'An unknown error occurred' } as AxiosError);
-      }
-      setIsLoading(false);
+    } catch (err:any) {
+      
+     if(err.message === "Request failed with status code 422"){
+      setError("This user is registered")
+     }
+     else 
+     setError("Network Error")
+     setOpenModal(true)
+     setIsLoading(false);
     }
   };
 
-  return { register, isLoading, error };
+  const resetError = () =>{
+    setError("")
+  }
+  const handleModalClose = () =>{
+    setOpenModal(false)
+    }
+  return { register, isLoading, error ,resetError ,openModal, handleModalClose};
 };

@@ -71,3 +71,38 @@ border-radius: 10px;
     color: red;
     font-size: 10px;
 }
+
+
+.error{
+    color: red;
+    font-size: 12px;
+}
+
+.modalWrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+ width: 100%;
+ 
+}
+
+
+.errortext{
+   color: red;
+   font-size: 18px;
+   font-weight: 500; 
+}
+.network{
+color: red;
+
+}
+.close{
+margin-left: auto;
+}
+.or{
+color: black;
+font-weight: 500;
+font-size: 18px;
+}

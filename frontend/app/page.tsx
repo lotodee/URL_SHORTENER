@@ -1,18 +1,19 @@
 "use client";
 import React, { ChangeEvent, useState } from "react";
 import styles from "./page.module.css";
-import { AuthInput, Button } from "@/components";
+import { AuthInput, Button, Modal } from "@/components";
 import Link from "next/link";
 import { useRegister } from "@/hooks/useRegister";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useRouter } from "next/navigation"; 
+import Image from "next/image";
 
 const Register = () => {
   // Hooks
   const { user } = useAuthContext();
   const router = useRouter();
   const { token } = user ?? { token: null };
-  const { register } = useRegister();
+  const { register,error ,resetError,handleModalClose,openModal} = useRegister();
 
   // Redirect if user is logged in
   if (token) {
@@ -28,10 +29,13 @@ const Register = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [empty ,setEmpty] = useState("")
 
   // Event handlers
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    resetError()
     setEmailError("");
+    setEmpty("");
     setEmail(e.target.value);
     if (!isValidEmail(e.target.value)) {
       setEmailError("Invalid email");
@@ -40,6 +44,7 @@ const Register = () => {
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPasswordError("");
+    setEmpty("");
     setPassword(e.target.value);
     const passwordStrength = checkPasswordStrength(e.target.value);
     if (passwordStrength === "not strong") {
@@ -54,7 +59,9 @@ const Register = () => {
   };
 
   const handleConfirmPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    
     setConfirmPasswordError("");
+    setEmpty("");
     setPassword_confirmation(e.target.value);
     if (password !== e.target.value) {
       setConfirmPasswordError("Passwords do not match");
@@ -76,6 +83,9 @@ const Register = () => {
   };
 
   const handleRegister = async () => {
+    if(email === "" || password == "" || password_confirmation == ""){
+      setEmpty("no field must be empty")
+    } 
     if (emailError === "" && passwordError === "" && confirmPasswordError === "") {
       await register(email, password, password_confirmation);
     }
@@ -100,7 +110,7 @@ const Register = () => {
             icon="/env.svg"
           />
           {emailError && <div className={styles.error}>{emailError}</div>}
-
+          {error === "This user is registered" && <div className={styles.error}>{error}</div>}
           {/* Password input */}
           <AuthInput
             labelText="CREATE PASSWORD"
@@ -128,6 +138,7 @@ const Register = () => {
             }}
           />
           {confirmPasswordError && <div className={styles.error}>{confirmPasswordError}</div>}
+          {empty && <div className={styles.error}>{empty}</div>}
         </div>
 
         <div className={styles.buttons}>
@@ -143,6 +154,18 @@ const Register = () => {
           </Link>
         </div>
       </div>
+      <Modal  isOpen={openModal}>
+      <Image src="/close.svg" alt="close_icon" width={20} height={20} className={styles.close} onClick={handleModalClose} style={{cursor:`pointer`}}/>
+        <div className={styles.modalWrapper}>
+            <Image src="/networkError.png" alt="error_icon" width={50} height={50}/>
+            <span className={styles.network}>Network Error</span>
+            <div className={styles.network}>Our servers may be down</div>
+            <span className={styles.or}>OR</span>
+            <div className={styles.network}>Please check your network connection</div>
+        </div>
+        
+        
+   </Modal> 
     </div>
   );
 };
