@@ -18,6 +18,7 @@ import { useRouter } from 'next/navigation'
 export default function Home() {
   const { user } = useAuthContext();
   const { token } = user ?? { token: null };
+  
 const router = useRouter();
 
   if(!token){
