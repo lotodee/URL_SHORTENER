@@ -13,7 +13,7 @@ const Register = () => {
   const { user } = useAuthContext();
   const router = useRouter();
   const { token } = user ?? { token: null };
-  const { register,error ,resetError,handleModalClose,openModal} = useRegister();
+  const { register,error ,resetError,handleModalClose,openModal,isLoading} = useRegister();
 
   // Redirect if user is logged in
   if (token) {
@@ -143,7 +143,7 @@ const Register = () => {
 
         <div className={styles.buttons}>
           {/* Register button */}
-          <Button text="Create Account" onclick={handleRegister} />
+          <Button text={isLoading ?  "Please Wait..." : "Create Account"} onclick={handleRegister} />
         </div>
 
         <div className={styles.bottom_texts}>

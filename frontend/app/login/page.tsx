@@ -71,7 +71,7 @@ const Login = () => {
 
         <div className={styles.buttons}>
           {/* Login button */}
-          <Button text="Log into Account" onclick={handleLogin} disabled={isLoading} />
+          <Button text={ isLoading ? "Logging In.." : "Log into Account"} onclick={handleLogin} disabled={isLoading} />
         </div>
 
         <div className={styles.bottom_texts}>
