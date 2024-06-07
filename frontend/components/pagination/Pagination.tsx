@@ -3,45 +3,38 @@ import styles from "./Pagination.module.css"
 import Image from 'next/image';
 import { PaginationProps } from '@/types/types';
 
-
-
-// interface PaginationProps {
-//   dataLength: number;
-//   itemsPerPage: number;
-//   currentPage: number;
-//   onPageChange: (page: number) => void;
-// }
-
 const Pagination = ({
   dataLength,
   itemsPerPage,
   currentPage,
   onPageChange,
-}:PaginationProps) => {
+}: PaginationProps) => {
 
-
-
+    // State to handle small screen sizes
     const [small, setSmall] = useState(false);
 
+    // Effect to handle resizing and update the small state
     useEffect(() => {
       const handleResize = () => {
         const mediaQuery = window.matchMedia('(max-width: 700px)');
         setSmall(mediaQuery.matches);
       };
   
+      // Call handleResize initially and add resize event listener
       handleResize();
       window.addEventListener('resize', handleResize);
   
+      // Cleanup by removing event listener on unmount
       return () => {
         window.removeEventListener('resize', handleResize);
       };
     }, []);
 
-
-
+  // State for total pages and page numbers
   const [totalPages, setTotalPages] = useState(1);
   const [pageNumbers, setPageNumbers] = useState<(number | string)[]>([]);
 
+  // Effect to calculate total pages and page numbers whenever data changes
   useEffect(() => {
     const pages = Math.ceil(dataLength / itemsPerPage);
     setTotalPages(pages);
@@ -50,22 +43,26 @@ const Pagination = ({
     setPageNumbers(getPageNumbersWithEllipsis(numbers, currentPage));
   }, [dataLength, itemsPerPage, currentPage]);
 
+  // Function to handle going to the previous page
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       onPageChange(currentPage - 1);
     }
   };
 
+  // Function to handle going to the next page
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       onPageChange(currentPage + 1);
     }
   };
 
+  // Function to handle clicking on a specific page number
   const handlePageClick = (page: number) => {
     onPageChange(page);
   };
 
+  // Function to get page numbers with ellipsis for pagination
   const getPageNumbersWithEllipsis = (numbers: number[], currentPage: number): (number | string)[] => {
     if (numbers.length <= 7) {
       return numbers;
@@ -87,22 +84,21 @@ const Pagination = ({
   };
 
   return (
-    <div className={styles.paginationController}  >
-        
-        <div className={styles.previous} onClick={handlePreviousPage}>
+    <div className={styles.paginationController}>
+      <div className={styles.previous} onClick={handlePreviousPage}>
         <Image src="/arrow-left.svg" alt='arrow' height={20} width={20}/>
         <button onClick={handlePreviousPage} disabled={currentPage === 1} className={styles.prevBtn}>
-        Previous
-      </button>
-      
-        </div>
+          Previous
+        </button>
+      </div>
 
- <div className={styles.numbers}>
+      <div className={styles.numbers}>
         {small ? (
           <p className={styles.smallControllerText}>
             <span className={styles.span}>Page</span> {currentPage} <span className={styles.span}>of</span> {totalPages}
           </p>
         ) : (
+          // Display page numbers
           pageNumbers.map((page, index) => (
             typeof page === 'number' ? (
               <button
@@ -113,6 +109,7 @@ const Pagination = ({
                 {page}
               </button>
             ) : (
+              // Display ellipsis
               <span key={index} className={styles.ellipsis}>
                 {page}
               </span>
@@ -120,13 +117,12 @@ const Pagination = ({
           ))
         )}
       </div>
-     
-<div className={styles.next} onClick={handleNextPage}>
 
-      <button onClick={handleNextPage} disabled={currentPage === totalPages} className={styles.nextBtn}>
-        Next
-      </button>
-      <Image src="/arrow-right.svg" alt='arrow' height={20} width={20}/>
+      <div className={styles.next} onClick={handleNextPage}>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages} className={styles.nextBtn}>
+          Next
+        </button>
+        <Image src="/arrow-right.svg" alt='arrow' height={20} width={20}/>
       </div>
     </div>
   );

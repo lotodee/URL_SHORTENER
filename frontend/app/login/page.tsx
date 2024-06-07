@@ -1,29 +1,33 @@
-"use client";
 import React, { useState } from "react";
 import styles from "./page.module.css";
 import { AuthInput, Button } from "@/components";
 import Link from "next/link";
 import { useLogin } from "@/hooks/useLogin";
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/router'; // Fix incorrect import
 import { useAuthContext } from "@/hooks/useAuthContext";
+
 const Login = () => {
+  // Hooks
   const { user } = useAuthContext();
   const router = useRouter();
   const { token } = user ?? { token: null };
-  if(token){
-router.push("/home")
+  const { login, error, isLoading } = useLogin();
+
+  // Redirect if user is logged in
+  if (token) {
+    router.push("/home");
   }
 
+  // State
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [openPassword, setOpenPassword] = useState(false);
-  const {login ,error ,isLoading ,loggedIn } =useLogin()
+
+  // Login handler
   const handleLogin = async () => {
-  await login(email,password)
-
- 
-
+    await login(email, password);
   };
+
   return (
     <div className={styles.main}>
       <div className={styles.login_wrapper}>
@@ -35,43 +39,40 @@ router.push("/home")
         </div>
 
         <div className={styles.inputs}>
+          {/* Email input */}
           <AuthInput
             labelText="EMAIL ADDRESS"
             type="text"
             value={email}
-            onchange={(e) => {
-              setEmail(e.target.value);
-            }}
+            onchange={(e) => setEmail(e.target.value)}
             placeholderText="Enter your email"
             icon="/env.svg"
           />
+          {/* Password input */}
           <AuthInput
             labelText="PASSWORD"
             type={openPassword ? "text" : "password"}
             value={password}
-            onchange={(e) => {
-              setPassword(e.target.value);
-            }}
-            onclick={()=>{setOpenPassword(!openPassword)}}
+            onchange={(e) => setPassword(e.target.value)}
+            onclick={() => setOpenPassword(!openPassword)}
             placeholderText="Enter Password"
-            icon={openPassword ? "/eyeopen.svg":"/eyeclosed.svg"}
+            icon={openPassword ? "/eyeopen.svg" : "/eyeclosed.svg"}
           />
-          {error && (
-            <div className={styles.error}>{error}</div>
-          )}
+          {/* Error message */}
+          {error && <div className={styles.error}>{error}</div>}
         </div>
 
         <div className={styles.buttons}>
-          <Button text="Log into Account" onclick={handleLogin} disabled={isLoading}/>
+          {/* Login button */}
+          <Button text="Log into Account" onclick={handleLogin} disabled={isLoading} />
         </div>
 
         <div className={styles.bottom_texts}>
           <p className={styles.question}>Are you new here?</p>
-          
-            <Link href={"/"}>
+          {/* Link to create account */}
+          <Link href={"/"}>
             <span className={styles.login}>Create Account</span>
-            </Link>
-          
+          </Link>
         </div>
       </div>
     </div>
