@@ -1,4 +1,4 @@
-// Import necessary modules and components
+"use client"
 import Image from "next/image";
 import styles from "./page.module.css";
 import {
@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import { truncateLink } from "@/utils/truncatelink";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useUrlShortener } from "@/hooks/useUrlShortener";
-import { useRouter } from 'next/router'; // Fix incorrect import
+import { useRouter } from 'next/navigation'; 
 
 export default function Home() {
   // Initialize state variables

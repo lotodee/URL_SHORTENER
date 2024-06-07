@@ -5,7 +5,7 @@ import { AuthInput, Button } from "@/components";
 import Link from "next/link";
 import { useRegister } from "@/hooks/useRegister";
 import { useAuthContext } from "@/hooks/useAuthContext";
-import { useRouter } from "next/router"; // Fix incorrect import
+import { useRouter } from "next/navigation"; 
 
 const Register = () => {
   // Hooks

@@ -1,17 +1,19 @@
+"use client"
 import React, { useState } from "react";
 import styles from "./page.module.css";
-import { AuthInput, Button } from "@/components";
+import { AuthInput, Button, Modal } from "@/components";
 import Link from "next/link";
 import { useLogin } from "@/hooks/useLogin";
-import { useRouter } from 'next/router'; // Fix incorrect import
+import { useRouter } from 'next/navigation'; // Fix incorrect import
 import { useAuthContext } from "@/hooks/useAuthContext";
+import Image from "next/image";
 
 const Login = () => {
   // Hooks
   const { user } = useAuthContext();
   const router = useRouter();
   const { token } = user ?? { token: null };
-  const { login, error, isLoading } = useLogin();
+  const { login, error, isLoading,openModal ,handleModalClose} = useLogin();
 
   // Redirect if user is logged in
   if (token) {
@@ -22,13 +24,18 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [openPassword, setOpenPassword] = useState(false);
+ 
 
   // Login handler
   const handleLogin = async () => {
     await login(email, password);
   };
+  
+ // handle modal close 
 
+ 
   return (
+    
     <div className={styles.main}>
       <div className={styles.login_wrapper}>
         <div className={styles.top}>
@@ -59,7 +66,7 @@ const Login = () => {
             icon={openPassword ? "/eyeopen.svg" : "/eyeclosed.svg"}
           />
           {/* Error message */}
-          {error && <div className={styles.error}>{error}</div>}
+          {error === "Invalid Credentials" && <div className={styles.error}>{error}</div>}
         </div>
 
         <div className={styles.buttons}>
@@ -75,6 +82,18 @@ const Login = () => {
           </Link>
         </div>
       </div>
+      <Modal  isOpen={openModal}>
+      <Image src="/close.svg" alt="close_icon" width={20} height={20} className={styles.close} onClick={handleModalClose} style={{cursor:`pointer`}}/>
+        <div className={styles.modalWrapper}>
+            <Image src="/networkError.png" alt="error_icon" width={50} height={50}/>
+            <span className={styles.network}>Network Error</span>
+            <div className={styles.network}>Our servers may be down</div>
+            <span className={styles.or}>OR</span>
+            <div className={styles.network}>Please check your network connection</div>
+        </div>
+        
+        
+   </Modal> 
     </div>
   );
 };

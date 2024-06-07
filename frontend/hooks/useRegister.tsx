@@ -11,6 +11,7 @@ export const useRegister = () => {
   const [error, setError] = useState<AxiosError | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [registered, setRegistered] = useState<boolean>(false);
+  const [openModal ,setOpenModal] = useState(false)
   const { dispatch } = useAuthContext();
 
   const register = async (email: string, password: string,password_confirmation:string) => {

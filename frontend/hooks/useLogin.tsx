@@ -11,6 +11,8 @@ export const useLogin = () => {
   const [error, setError] = useState<string | null>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
+  const [openModal ,setOpenModal] = useState(false)
+ 
   const { dispatch } = useAuthContext();
 
   const login = async (email: string, password: string) => {
@@ -38,14 +40,21 @@ export const useLogin = () => {
       dispatch({ type: 'LOGIN', payload: response.data });
      
       
-    } catch (err) {
-   
-      setError("Invalid crendentials")
+    } catch (err:any) {
+     if(err.message === "Request failed with status code 422"){
+      setError("Invalid Credentials")
+     }
+     else
+     setError("Network Error")
+  setOpenModal(true)
+      
      
    
       setIsLoading(false);
     }
   };
-
-  return { login, isLoading, error, loggedIn };
+const handleModalClose = () =>{
+setOpenModal(false)
+}
+  return { login, isLoading, error, loggedIn,openModal,handleModalClose};
 };
