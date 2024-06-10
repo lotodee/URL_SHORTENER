@@ -88,6 +88,14 @@ border-radius: 10px;
  
 }
 
+.Password_error,.Empty_error,.confirm_error,.Email_error{
+    color: red;
+    font-size: 10px;
+    font-weight: 500; 
+    text-wrap: wrap;
+   
+    
+}
 
 .errortext{
    color: red;

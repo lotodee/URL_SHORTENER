@@ -41,13 +41,14 @@ export const useLogin = () => {
      
       
     } catch (err:any) {
-     if(err.message === "Request failed with status code 422"){
+      console.log(err.message)
+     if(err.message === "Request failed with status code 401"){
       setError("Invalid Credentials")
      }
-     else
+     else{
      setError("Network Error")
   setOpenModal(true)
-      
+     }
      
    
       setIsLoading(false);

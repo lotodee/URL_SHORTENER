@@ -109,7 +109,7 @@ const Register = () => {
             placeholderText="Enter your email"
             icon="/env.svg"
           />
-          {emailError && <div className={styles.error}>{emailError}</div>}
+          {emailError && <div className={styles.Email_error}>{emailError}</div>}
           {error === "This user is registered" && <div className={styles.error}>{error}</div>}
           {/* Password input */}
           <AuthInput
@@ -123,7 +123,7 @@ const Register = () => {
               setOpenPassword(!openPassword);
             }}
           />
-          {passwordError && <div className={styles.error}>{passwordError}</div>}
+          {passwordError && <div className={styles.Password_error}>{passwordError}</div>}
 
           {/* Confirm Password input */}
           <AuthInput
@@ -137,8 +137,8 @@ const Register = () => {
               setOpenConfirmPassword(!openConfirmPassword);
             }}
           />
-          {confirmPasswordError && <div className={styles.error}>{confirmPasswordError}</div>}
-          {empty && <div className={styles.error}>{empty}</div>}
+          {confirmPasswordError && <div className={styles.Confirm_error}>{confirmPasswordError}</div>}
+          {empty && <div className={styles.Empty_error}>{empty}</div>}
         </div>
 
         <div className={styles.buttons}>
